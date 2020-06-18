@@ -14,12 +14,6 @@ function App() {
         });
     }, []);
 
-    // useEffect(() => {
-    //     api.get('/repositories').then(response => {
-    //         setRepositories(response.data);
-    //     });
-    // }, [repositories]);
-
   async function handleAddRepository() {
     const response = await api.post('/repositories', {
       title: `Bootcamp GoStack ${Date.now()}`,
@@ -34,9 +28,11 @@ function App() {
   async function handleRemoveRepository(id) {
     await api.delete(`/repositories/${id}`);
 
-    api.get('/repositories').then(response => {
-        setRepositories(response.data);
-    });
+    const repositoryIndex = repositories.findIndex(repository => repository.id === id);
+
+    const repos = [...repositories];
+    repos.splice(repositoryIndex, 1);
+    setRepositories(repos);
   }
 
   return (
